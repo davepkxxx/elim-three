@@ -1,4 +1,4 @@
-# elim-three
+# The elimination game: Elim Three
 类似Three!的消除游戏，使用javafx2实现。
 
 ## 快捷键：

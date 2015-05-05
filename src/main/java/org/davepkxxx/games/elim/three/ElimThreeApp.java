@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
- * Created by daviddai on 15/5/3.
+ * 游戏主体程序
  * @author David Dai
  */
 public class ElimThreeApp extends Application {
@@ -25,18 +25,31 @@ public class ElimThreeApp extends Application {
     
     private int mapCols;
 
+    /**
+     * 根据地图上的坐标获取格子
+     * @param y 横坐标
+     * @param x 纵坐标
+     * @return 格子
+     */
     private Label getNumBlock(int y, int x) {
         VBox vbox = (VBox) this.map;
         HBox hbox = (HBox) vbox.getChildren().get(y);
         return (Label) hbox.getChildren().get(x);
     }
 
+    /**
+     * 初始化游戏参数
+     */
     public void init() {
         this.mapRows = 4;
         this.mapCols = 4;
-        this.calc = new ElimCalc(1, this.mapRows, this.mapCols);
+        this.calc = new ElimCalc(this.mapRows, this.mapCols);
     }
 
+    /**
+     * 初始化地图
+     * @return 地图组件
+     */
     public VBox createMap() {
         VBox vbox = new VBox();
         vbox.setSpacing(4);
@@ -59,13 +72,16 @@ public class ElimThreeApp extends Application {
         return vbox;
     }
 
+    /**
+     * 绘制地图上的格子里的具体内容
+     */
     public void drawMap() {
         for (int row = 0; row < this.mapRows; row++) {
             for (int col = 0; col < this.mapCols; col++) {
                 Label lbl = getNumBlock(row, col);
                 int num = this.calc.getNum(row, col);
 
-                if (num == 0) {
+                if (num == 0) { // 格子是空的就去掉文字和背景，否则根据数字声称内容和背景。
                     lbl.setText("");
                     lbl.setBackground(null);
                 } else {
@@ -85,20 +101,20 @@ public class ElimThreeApp extends Application {
         primaryStage.setScene(new Scene(this.map));
 
         primaryStage.getScene().setOnKeyPressed((event) -> {
-            if (KeyCode.N.equals(event.getCode())) {
+            if (KeyCode.N.equals(event.getCode())) { //按N开始新游戏
                 this.calc.initMap();
                 drawMap();
-            } else if (!this.calc.isOver()) {
-                if (KeyCode.UP.equals(event.getCode())) {
+            } else if (!this.calc.isOver()) { // 在游戏没有结束时可以做的事情
+                if (KeyCode.UP.equals(event.getCode())) { // 按UP可以向上移动
                     this.calc.move(ElimCalc.MoveDirection.UP);
                     drawMap();
-                } else if (KeyCode.DOWN.equals(event.getCode())) {
+                } else if (KeyCode.DOWN.equals(event.getCode())) { // 按DOWN可以向下移动
                     this.calc.move(ElimCalc.MoveDirection.DOWN);
                     drawMap();
-                } else if (KeyCode.LEFT.equals(event.getCode())) {
+                } else if (KeyCode.LEFT.equals(event.getCode())) { // 按LEFT可以向左移动
                     this.calc.move(ElimCalc.MoveDirection.LEFT);
                     drawMap();
-                } else if (KeyCode.RIGHT.equals(event.getCode())) {
+                } else if (KeyCode.RIGHT.equals(event.getCode())) { // 按RIGHT可以向右移动
                     this.calc.move(ElimCalc.MoveDirection.RIGHT);
                     drawMap();
                 }
